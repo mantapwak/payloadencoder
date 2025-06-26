@@ -1,30 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>XSS Encoder Tool</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h1>XSS Encode / Decode Playground</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>XSS Encode/Decode Tool</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>XSS Encode / Decode Playground</h1>
 
-      <label>
-        <input type="checkbox" id="decodeMode" onchange="processText()" />
-        Decode Mode
-      </label>
+    <label>
+      <input type="checkbox" id="decodeMode" onchange="processText()" />
+      Decode Mode
+    </label>
 
-      <input
-        type="text"
-        id="inputText"
-        placeholder="Masukkan payload..."
-        oninput="processText()"
-      />
+    <input type="text" id="inputText" placeholder="Masukkan payload..." oninput="processText()" />
 
-      <div id="outputArea"></div>
-    </div>
+    <div id="outputArea"></div>
+  </div>
 
-    <script src="script.js"></script>
-  </body>
+  <script src="script.js"></script>
+</body>
 </html>

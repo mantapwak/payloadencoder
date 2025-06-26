@@ -42,12 +42,7 @@ function processText() {
   for (const [label, result] of Object.entries(decoders[detected])) {
     const box = document.createElement("div");
     box.className = "output-box";
-    box.innerHTML = `
-          <span>${label}</span>
-          <button class="copy-btn" onclick="copyToClipboard(\`${escapeBackticks(
-            result
-          )}\`)">Copy</button>
-          ${result}`;
+    box.innerHTML = `<span>${label}</span>${result}`;
     grid.appendChild(box);
   }
 
@@ -111,12 +106,7 @@ function renderEncode(text, container) {
     for (const [label, result] of Object.entries(group.data)) {
       const box = document.createElement("div");
       box.className = "output-box";
-      box.innerHTML = `
-            <span>${label}</span>
-            <button class="copy-btn" onclick="copyToClipboard(\`${escapeBackticks(
-              result
-            )}\`)">Copy</button>
-            ${result}`;
+      box.innerHTML = `<span>${label}</span>${result}`;
       grid.appendChild(box);
     }
 
@@ -180,19 +170,4 @@ function htmlDecode(str) {
   const el = document.createElement("textarea");
   el.innerHTML = str;
   return el.value;
-}
-
-function escapeBackticks(str) {
-  return String(str).replace(/`/g, "\\`").replace(/\$/g, "\\$");
-}
-
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(
-    () => {
-      alert("Copied to clipboard!");
-    },
-    () => {
-      alert("Failed to copy!");
-    }
-  );
 }
