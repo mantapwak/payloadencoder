@@ -17,6 +17,7 @@ body {
 }
 
 h1 {
+  font-size: 28px;
   margin-bottom: 10px;
 }
 
@@ -62,14 +63,16 @@ label {
 
 .output-box {
   background: #f9f9f9;
-  padding: 12px;
+  padding: 16px;
+  margin-top: 4px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   min-width: 140px;
   flex: 1 1 160px;
   word-wrap: break-word;
   text-align: center;
   font-size: 13px;
+  position: relative;
 }
 
 .output-box span {
@@ -79,11 +82,29 @@ label {
   color: #333;
 }
 
-/* Mobile friendly */
+.copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.copy-btn:hover {
+  opacity: 1;
+}
+
 @media (max-width: 600px) {
   .output-box {
     font-size: 12px;
-    padding: 10px;
+    padding: 12px;
   }
 
   input[type="text"] {

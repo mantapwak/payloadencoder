@@ -42,7 +42,12 @@ function processText() {
   for (const [label, result] of Object.entries(decoders[detected])) {
     const box = document.createElement("div");
     box.className = "output-box";
-    box.innerHTML = `<span>${label}</span>${result}`;
+    box.innerHTML = `
+          <span>${label}</span>
+          <button class="copy-btn" onclick="copyToClipboard(\`${escapeBackticks(
+            result
+          )}\`)">Copy</button>
+          ${result}`;
     grid.appendChild(box);
   }
 
@@ -58,13 +63,13 @@ function renderEncode(text, container) {
       data: {
         Base64: btoa(text),
         "URL Encode": encodeURIComponent(text),
-        "HTML Encode": [...text].map((c) => `&#${c.charCodeAt(0)};`).join(""),
         "Full URL Encode": [...text]
           .map((c) => `%${c.charCodeAt(0).toString(16)}`)
           .join(""),
         "Unicode Escape": [...text]
           .map((c) => "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0"))
           .join(""),
+        "HTML Encode": [...text].map((c) => `&#${c.charCodeAt(0)};`).join(""),
         Hex: [...text]
           .map((c) => "\\x" + c.charCodeAt(0).toString(16))
           .join(""),
@@ -106,7 +111,12 @@ function renderEncode(text, container) {
     for (const [label, result] of Object.entries(group.data)) {
       const box = document.createElement("div");
       box.className = "output-box";
-      box.innerHTML = `<span>${label}</span>${result}`;
+      box.innerHTML = `
+            <span>${label}</span>
+            <button class="copy-btn" onclick="copyToClipboard(\`${escapeBackticks(
+              result
+            )}\`)">Copy</button>
+            ${result}`;
       grid.appendChild(box);
     }
 
@@ -116,29 +126,28 @@ function renderEncode(text, container) {
   });
 }
 
+// === DETEKSI ENCODING ===
+
 function detectEncodingType(input) {
-  if (/^([A-Za-z0-9+/]{4})*={0,2}$/.test(input) && input.length % 4 === 0) {
-    return "Base64";
-  }
-  if (/^(\\x)?([0-9a-fA-F]{2})+$/.test(input.replace(/\\x/g, ""))) {
-    return "Hex";
-  }
-  if (/^([01]{8}\s?)+$/.test(input.trim())) {
-    return "Binary";
-  }
-  if (/\\u[0-9a-fA-F]{4}/.test(input)) {
-    return "Unicode";
-  }
-  if (/&#\d+;/.test(input)) {
-    return "HTML";
-  }
-  if (/%[0-9a-fA-F]{2}/.test(input)) {
-    return "URL";
-  }
+  if (isLikelyBase64(input)) return "Base64";
+  if (/^(\\x)?([0-9a-fA-F]{2})+$/.test(input.replace(/\\x/g, ""))) return "Hex";
+  if (/^([01]{8}\s?)+$/.test(input.trim())) return "Binary";
+  if (/\\u[0-9a-fA-F]{4}/.test(input)) return "Unicode";
+  if (/&#\d+;/.test(input)) return "HTML";
+  if (/%[0-9a-fA-F]{2}/.test(input)) return "URL";
   return null;
 }
 
-// Helpers
+function isLikelyBase64(str) {
+  try {
+    const decoded = atob(str);
+    return /^[\x00-\x7F]*$/.test(decoded);
+  } catch {
+    return false;
+  }
+}
+
+// === UTILITAS ===
 
 function tryDecode(fn) {
   try {
@@ -171,4 +180,19 @@ function htmlDecode(str) {
   const el = document.createElement("textarea");
   el.innerHTML = str;
   return el.value;
+}
+
+function escapeBackticks(str) {
+  return String(str).replace(/`/g, "\\`").replace(/\$/g, "\\$");
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(
+    () => {
+      alert("Copied to clipboard!");
+    },
+    () => {
+      alert("Failed to copy!");
+    }
+  );
 }
