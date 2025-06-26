@@ -80,6 +80,12 @@ label {
   color: #333;
 }
 
+.result-box {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: monospace;
+}
+
 @media (max-width: 600px) {
   .output-box {
     font-size: 12px;
@@ -92,15 +98,5 @@ label {
 
   h1 {
     font-size: 20px;
-  }
-}
-@media (max-width: 400px) {
-  .output-box {
-    min-width: 100px;
-    flex: 1 1 120px;
-  }
-
-  input[type="text"] {
-    max-width: 100%;
   }
 }

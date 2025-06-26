@@ -42,7 +42,9 @@ function processText() {
   for (const [label, result] of Object.entries(decoders[detected])) {
     const box = document.createElement("div");
     box.className = "output-box";
-    box.innerHTML = `<span>${label}</span>${result}`;
+    box.innerHTML = `<span>${label}</span><div class="result-box">${escapeHTML(
+      result
+    )}</div>`;
     grid.appendChild(box);
   }
 
@@ -106,7 +108,9 @@ function renderEncode(text, container) {
     for (const [label, result] of Object.entries(group.data)) {
       const box = document.createElement("div");
       box.className = "output-box";
-      box.innerHTML = `<span>${label}</span>${result}`;
+      box.innerHTML = `<span>${label}</span><div class="result-box">${escapeHTML(
+        result
+      )}</div>`;
       grid.appendChild(box);
     }
 
@@ -115,8 +119,6 @@ function renderEncode(text, container) {
     container.appendChild(groupDiv);
   });
 }
-
-// === DETEKSI ENCODING ===
 
 function detectEncodingType(input) {
   if (isLikelyBase64(input)) return "Base64";
@@ -136,8 +138,6 @@ function isLikelyBase64(str) {
     return false;
   }
 }
-
-// === UTILITAS ===
 
 function tryDecode(fn) {
   try {
@@ -170,4 +170,13 @@ function htmlDecode(str) {
   const el = document.createElement("textarea");
   el.innerHTML = str;
   return el.value;
+}
+
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
